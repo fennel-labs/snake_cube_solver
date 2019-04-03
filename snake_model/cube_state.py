@@ -8,9 +8,12 @@ from snake_model.snake_description import SnakeDescription, Direction
 class CubeState:
     datatype = np.dtype((np.int32, (3,))) # datatyp for 3D integer points
 
-    def __init__(self):
+    def __init__(self, description):
+        # snake description
+        self.snake_description = description
+
         # create memory for points
-        self.points = np.zeros(CubeState.snake_description.cube_size**3,dtype=self.datatype) # points that are occupied by the snake
+        self.points = np.zeros(self.snake_description.cube_size**3,dtype=self.datatype) # points that are occupied by the snake
         self.current_point = np.zeros(1, CubeState.datatype) # current position
         self.current_points_index = 0 # index of last written array place
         
@@ -23,20 +26,22 @@ class CubeState:
     def plotState(self):
         #print(self.points)
         
-        figure = plt.figure()
+        figure = plt.figure(0)
         ax = figure.gca(projection='3d')
 
         x = self.points[0:self.current_points_index+1, 0]
         y = self.points[0:self.current_points_index+1, 1]
         z = self.points[0:self.current_points_index+1, 2]
         
-        limit = CubeState.snake_description.cube_size + 1
+        limit = self.snake_description.cube_size + 1
         ax.set_xlim(-limit, limit)
         ax.set_ylim(-limit, limit)
         ax.set_zlim(-limit, limit)
         ax.set_facecolor('green' if self.isValid() else 'red')
         ax.plot(x,y,z, color='black', linewidth=3)
+        plt.ion()
         plt.show()
+        plt.pause(0.001)
 
     def isValid(self):
         valid_points = self.points[0:self.current_points_index+1]
@@ -48,7 +53,7 @@ class CubeState:
         unique_points = np.unique(valid_points, axis=0) # unique points
 
         # cube state is valid if dimensions are not exceeded and points are unique
-        if (max(delta) <= CubeState.snake_description.cube_size  
+        if (max(delta) <= self.snake_description.cube_size  
             and unique_points.shape[0] == valid_points.shape[0]):
             return True
         else:
@@ -65,7 +70,7 @@ class CubeState:
             Direction.Zp : (0,0,+1)
         }[dir]
         
-        seg_length = CubeState.snake_description.segment_lengths[seg_num]
+        seg_length = self.snake_description.segment_lengths[seg_num]
         # special treatment for first segment
         if seg_num == 0:
             seg_length -= 1
@@ -76,17 +81,20 @@ class CubeState:
             self.current_points_index += 1
             self.points[self.current_points_index,:] = self.current_point
 
-    def extend(self, variant)
+
+    def extend(self, variant):
         if variant > 3:
             raise Exception("Only four variants are available!")
-        variants = {
+
+        self.current_dir = {
             Direction.Xp : [Direction.Yp, Direction.Zp, Direction.Yn, Direction.Zn],
             Direction.Xn : [Direction.Zn, Direction.Yn, Direction.Zp, Direction.Yp],
+            Direction.Yp : [Direction.Zp, Direction.Xp, Direction.Zn, Direction.Xn],
+            Direction.Yn : [Direction.Xn, Direction.Zn, Direction.Xp, Direction.Zp],
+            Direction.Zp : [Direction.Xp, Direction.Yp, Direction.Xn, Direction.Yn],
+            Direction.Zn : [Direction.Yn, Direction.Xn, Direction.Yp, Direction.Xp],
         }[self.current_dir][variant]
+        self.current_seg += 1
 
-
-    @staticmethod
-    def setDescription(description):
-        CubeState.snake_description = description
-
+        self.appendSegment(self.current_seg, self.current_dir)
 

@@ -1,15 +1,26 @@
 from snake_model.cube_state import CubeState
 from snake_model.snake_description import SnakeDescription
 
-CubeState.setDescription(SnakeDescription([3,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2]))
+import matplotlib.pyplot as plt
+import time
 
-test = CubeState()
-test.points[1] = (1,0,0)
-test.points[2] = (2,0,0)
-test.points[3] = (2,1,0)
-test.points[4] = (2,2,0)
-test.points[5] = (1,0,0)
-test.points_index = 5
+desc = SnakeDescription([3,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2])
+
+test = CubeState(desc)
 test.plotState()
+test.extend(0)
+time.sleep(3)
+test.plotState()
+test.extend(1)
+time.sleep(3)
+test.plotState()
+test.extend(2)
+time.sleep(3)
+test.plotState()
+test.extend(3)
+time.sleep(3)
+test.plotState()
+plt.show()
+
 
 print("Hello test world")
