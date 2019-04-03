@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import Enum, unique
 
 @unique
-class Direction(Enum)
+class Direction(Enum):
     Xp = 1
     Xn = 2
     Yp = 3
@@ -10,16 +10,18 @@ class Direction(Enum)
     Zn = 6
 
 
-class SnakeDescription
-    
-    segment_lengths=[]
-    cube_size = 0
+# two fields:
+# 1. segment_lengths
+# 2. cube_size
+class SnakeDescription:
 
     def __init__(self, segments):
         self.segment_lengths = segments
-        size = sum(self.segment_lengths)**(1./3.)
-        if round(size)**3 == size:
-            self.cube_size = size
+        num_elements = sum(self.segment_lengths)
+        size = num_elements**(1./3.)
+        if round(size)**3 == num_elements:
+            self.cube_size = round(size)
+            print("Cube side length is {0}.".format(self.cube_size))
         else:
             raise Exception("The length of the given snake will not fit into a cube!")
 
