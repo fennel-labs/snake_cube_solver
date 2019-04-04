@@ -18,8 +18,8 @@ class CubeState:
         self.current_points_index = 0 # index of last written array place
         
         # insert the first segment
-        self.current_seg = 0
-        self.current_dir = Direction.Xp
+        self.current_seg = 0 # index of lastly expanded segment (0: first segment)
+        self.current_dir = Direction.Xp # direction
         self.appendSegment(self.current_seg, self.current_dir)
 
 
@@ -33,15 +33,16 @@ class CubeState:
         y = self.points[0:self.current_points_index+1, 1]
         z = self.points[0:self.current_points_index+1, 2]
         
+        plt.cla()
         limit = self.snake_description.cube_size + 1
         ax.set_xlim(-limit, limit)
         ax.set_ylim(-limit, limit)
         ax.set_zlim(-limit, limit)
         ax.set_facecolor('green' if self.isValid() else 'red')
         ax.plot(x,y,z, color='black', linewidth=3)
-        plt.ion()
+        #plt.ion()
         plt.show()
-        plt.pause(0.001)
+        #plt.pause(0.001)
 
     def isValid(self):
         valid_points = self.points[0:self.current_points_index+1]
@@ -53,11 +54,18 @@ class CubeState:
         unique_points = np.unique(valid_points, axis=0) # unique points
 
         # cube state is valid if dimensions are not exceeded and points are unique
-        if (max(delta) <= self.snake_description.cube_size  
+        if (max(delta) < self.snake_description.cube_size  
             and unique_points.shape[0] == valid_points.shape[0]):
             return True
         else:
             return False
+
+    def isComplete(self):
+        valid = self.isValid()
+        complete = (self.current_seg+1 == len(self.snake_description.segment_lengths))
+
+        return valid and complete
+
 
     def appendSegment(self, seg_num, dir):
         # kind of a switch case
@@ -95,6 +103,8 @@ class CubeState:
             Direction.Zn : [Direction.Yn, Direction.Xn, Direction.Yp, Direction.Xp],
         }[self.current_dir][variant]
         self.current_seg += 1
+        if self.current_seg >= len(self.snake_description.segment_lengths):
+            raise Exception("Called extend on a snake that is already fully used.")
 
         self.appendSegment(self.current_seg, self.current_dir)
 
