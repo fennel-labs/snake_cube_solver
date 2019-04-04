@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import copy
 
 from snake_model.snake_description import SnakeDescription, Direction
 
@@ -107,4 +108,18 @@ class CubeState:
             raise Exception("Called extend on a snake that is already fully used.")
 
         self.appendSegment(self.current_seg, self.current_dir)
+
+    # custom deep copy method to avoid copying of the snake description in depth first search
+    def __deepcopy__(self, memo):
+        copied = CubeState(self.snake_description) # description is only copied as reference
+        # the state determining fields are truly copied (deep copy)
+        copied.points = copy.deepcopy(self.points, memo)
+        copied.current_point = copy.deepcopy(self.current_point, memo)
+        copied.current_points_index = copy.deepcopy(self.current_points_index, memo)
+        copied.current_seg = copy.deepcopy(self.current_seg, memo)
+        copied.current_dir = copy.deepcopy(self.current_dir, memo)
+        
+        return copied
+
+
 

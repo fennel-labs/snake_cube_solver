@@ -50,6 +50,5 @@ else:
         plt.show()
 
 # Todo:
-# Copy constructor
 # Plot
 # CLI
