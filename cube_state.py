@@ -22,6 +22,10 @@ class CubeState:
         self.current_seg = 0 # index of lastly expanded segment (0: first segment)
         self.current_dir = Direction.Xp # direction
         self.appendSegment(self.current_seg, self.current_dir)
+        # insert the second segment (since the second segment determines the rotations)
+        self.current_seg += 1
+        self.current_dir = Direction.Yp
+        self.appendSegment(self.current_seg, self.current_dir)
 
 
     def plotState(self):
