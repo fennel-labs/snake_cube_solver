@@ -10,3 +10,6 @@ The cube layout list above is encoded as follows:
 - All other items represent the number of cubes after a bend and before the next bend occurs.
 
 To get all possible solutions, add `-a` to the command. Note, that the solutions also include congruent solutions.
+
+Cubes of size 3 are solvable within seconds (<10s on Core i7 ULV processor).
+Cubes of size 4 have not been tested yet.
