@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import copy
 
-from snake_model.snake_description import SnakeDescription, Direction
+from snake_description import SnakeDescription, Direction
 
 
 class CubeState:

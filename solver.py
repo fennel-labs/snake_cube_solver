@@ -1,5 +1,5 @@
-from snake_model.cube_state import CubeState
-from snake_model.snake_description import SnakeDescription
+from cube_state import CubeState
+from snake_description import SnakeDescription
 
 import matplotlib.pyplot as plt
 import time
@@ -79,4 +79,3 @@ if __name__ == "__main__":
 
 # Todo:
 # Plot
-# CLI
