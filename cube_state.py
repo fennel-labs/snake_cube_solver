@@ -114,7 +114,8 @@ class CubeState:
 
     # custom deep copy method to avoid copying of the snake description in depth first search
     def __deepcopy__(self, memo):
-        copied = CubeState(self.snake_description) # description is only copied as reference
+        copied = CubeState.__new__(CubeState)
+        copied.snake_description = self.snake_description # description is only copied as reference
         # the state determining fields are truly copied (deep copy)
         copied.points = copy.deepcopy(self.points, memo)
         copied.current_point = copy.deepcopy(self.current_point, memo)
