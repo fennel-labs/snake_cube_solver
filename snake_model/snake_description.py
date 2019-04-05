@@ -22,6 +22,8 @@ class SnakeDescription:
         if round(size)**3 == num_elements:
             self.cube_size = round(size)
             print("Cube side length is {0}.".format(self.cube_size))
+            print("Using the following snake description:")
+            print(self.segment_lengths)
         else:
             raise Exception("The length of the given snake will not fit into a cube!")
 
