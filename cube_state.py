@@ -62,10 +62,9 @@ class CubeState:
             return False
 
     def isComplete(self):
-        valid = self.isValid()
         complete = (self.current_seg+1 == len(self.snake_description.segment_lengths))
 
-        return valid and complete
+        return complete
 
 
     def appendSegment(self, seg_num, dir):

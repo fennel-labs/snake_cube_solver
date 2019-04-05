@@ -43,6 +43,7 @@ def main(desc, show_all):
 
             # check for solution
             if new_node.isComplete():
+                if new_node.isValid():
                 solutions.append(new_node)
                 break # if there is just one segment left, only one solution is feasible
             # sort out invalid branches
